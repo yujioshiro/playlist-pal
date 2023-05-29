@@ -29,6 +29,6 @@ jobs:
           npm ci && npm run build
       - name: deploy
         run: |
-          cd server/src
+          cd server
           zip -j function.zip ./src/*
           aws lambda update-function-code --function-name=generatePlaylist --zip-file=fileb://function.zip

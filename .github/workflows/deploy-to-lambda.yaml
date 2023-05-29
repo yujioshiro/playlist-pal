@@ -21,14 +21,14 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-west-1
-      - name: npm install
+      - name: npm install and build
         env:
           CI: true
         run: |
           cd server
-          npm ci
+          npm ci && npm run build
       - name: deploy
         run: |
-          cd server
-          zip -j function.zip ./dist/*
+          cd server/src
+          zip -j function.zip ./src/*
           aws lambda update-function-code --function-name=generatePlaylist --zip-file=fileb://function.zip

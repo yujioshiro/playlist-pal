@@ -11,7 +11,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/node": "^20.2.5",
+    "@types/sharp": "^0.32.0",
     "aws-lambda": "^1.0.7",
+    "openai": "^3.2.1",
     "typescript": "^5.0.4"
   },
   "devDependencies": {

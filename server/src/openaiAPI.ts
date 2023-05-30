@@ -34,7 +34,7 @@ export async function getSongsFromOpenAiCompletion(prompt: any): Promise<{ resul
     return { result: completionResult };
   } catch (error: any) {
     console.error('Error occurred while generating values:', error);
-    return { result: "An error occured" };
+    return { result: "An error occured." };
   }
 
   // try {

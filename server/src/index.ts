@@ -1,4 +1,3 @@
-// index.ts
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { getSongsFromOpenAiCompletion, getImageFromOpenAi } from './openaiAPI';
 import { createPlaylistAndAddSongs } from './spotifyAPI';

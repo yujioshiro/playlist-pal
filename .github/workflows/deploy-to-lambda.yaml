@@ -30,5 +30,6 @@ jobs:
       - name: deploy
         run: |
           cd server
-          zip -r function.zip node_modules dist
+          zip -r function.zip node_modules
+          zip -j function.zip ./dist/*
           aws lambda update-function-code --function-name=generatePlaylist --zip-file=fileb://function.zip

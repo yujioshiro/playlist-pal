@@ -26,9 +26,9 @@ jobs:
           CI: true
         run: |
           cd server
-          npm ci && npm run build
+          npm install && npm run build
       - name: deploy
         run: |
           cd server
-          zip -r function.zip ./dist/* ./node_modules
+          zip -r function.zip node_modules dist
           aws lambda update-function-code --function-name=generatePlaylist --zip-file=fileb://function.zip

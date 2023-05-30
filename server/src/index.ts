@@ -37,7 +37,7 @@ export async function handler(event: APIGatewayProxyEvent): Promise<APIGatewayPr
       statusCode: 200,
       headers: {
         'Access-Control-Allow-Origin': '*', 
-        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
       },
       body: JSON.stringify({
         output: playlistId

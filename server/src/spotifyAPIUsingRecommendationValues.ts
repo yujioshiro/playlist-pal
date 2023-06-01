@@ -27,26 +27,26 @@ export async function createPlaylistAndAddSongsWithValues ( valuesObject: any, i
     }    
 
     interface SearchResponse {
-        "artists": {
-          "href": string,
-          "items": [
-            {
-              "id": string,
-              "name": string,
-              "uri": string
-            },
-            {
-              "id": string,
-              "name": string,
-              "uri": string
-            }
-          ],
-          "limit": number,
-          "next": string,
-          "offset": number,
-          "previous": null,
-          "total": number
-        }
+      "artists": {
+        "href": string,
+        "items": [
+          {
+            "id": string,
+            "name": string,
+            "uri": string
+          },
+          {
+            "id": string,
+            "name": string,
+            "uri": string
+          }
+        ],
+        "limit": number,
+        "next": string,
+        "offset": number,
+        "previous": null,
+        "total": number
+      }
     }
 
     interface Track {
@@ -177,6 +177,7 @@ export async function createPlaylistAndAddSongsWithValues ( valuesObject: any, i
         });
 
         const searchData = await searchResponse.json();
+        console.log(searchData);
         console.log(searchData.artists.items[0].id);
 
         if (searchData) {

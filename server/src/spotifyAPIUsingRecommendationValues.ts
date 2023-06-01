@@ -175,7 +175,7 @@ export async function createPlaylistAndAddSongsWithValues ( valuesObject: any, i
         });
 
         const searchData = await searchResponse.json();
-        // console.log(searchData.artists.items[0].id);
+        console.log(searchData.artists.items[0].id);
 
         if (searchData) {
             if (i === 0) {

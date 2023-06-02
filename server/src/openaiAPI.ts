@@ -14,7 +14,7 @@ export async function getSongsFromOpenAiCompletion(prompt: any): Promise<{ resul
 
   try {
     const completion = await openai.createCompletion({
-      model: "text-davinci-002",
+      model: "text-davinci-003",
       prompt: generateRecommendationsValues(prompt) ?? '',
       temperature: 1,
       max_tokens: 1000,

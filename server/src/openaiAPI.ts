@@ -1,4 +1,7 @@
 import { Configuration, OpenAIApi, ImagesResponse } from "openai";
+import { config as dotenvConfig } from 'dotenv';
+
+dotenvConfig();
 
 console.log("checking API Key");
 const configuration = new Configuration({
@@ -11,7 +14,7 @@ export async function getSongsFromOpenAiCompletion(prompt: any): Promise<{ resul
 
   try {
     const completion = await openai.createCompletion({
-      model: "text-davinci-003",
+      model: "text-davinci-002",
       prompt: generateRecommendationsValues(prompt) ?? '',
       temperature: 1,
       max_tokens: 1000,
@@ -89,7 +92,7 @@ export async function getSongsFromOpenAiCompletion(prompt: any): Promise<{ resul
 export async function getImageFromOpenAi(prompt: string) {
   try {
     const response = await openai.createImage({
-      prompt: `hyper-realistic,photographic scenery,volumetric lighting, ${prompt}`,
+      prompt: `faceless,humanless,leica m3,50mm f1.4,natural lighting,vibes,scene,${prompt}`,
       n: 1,
       size: "512x512",
     })

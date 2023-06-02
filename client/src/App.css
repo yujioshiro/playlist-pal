@@ -1,0 +1,136 @@
+* {
+    font-family: system-ui, sans-serif;
+    color:#FFF;
+}
+
+body {
+    align-items: center;
+    background-color: #121212;
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+}
+
+.playlist-prompt {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+h1 {
+    margin-bottom: 5px;
+}
+
+form {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+}
+
+input[type=text]::placeholder {
+    color: #757575;
+}
+
+input[type=text] {
+    background-color: #242424;
+    width: 880px;
+    height: 50px;
+    border-radius: 25px;
+    padding: 20px;
+    font-size: 15px;
+    outline-color: unset;
+    border: 0;
+    margin: 5px;
+    color: #FFF
+}
+
+input[type=text]:hover {
+    background-color: #2a2a2a;
+    box-shadow: 0 0 0 1px #5c5c5c;
+}
+
+/* :focus-visible only shows for keyboard users */
+input[type=text]:focus,
+input[type=submit]:focus-visible,
+input[type=button]:focus-visible {
+    outline: 1.5px solid #FFF;
+}
+
+input[type=submit],
+input[type=button] {
+    border: 0;
+    width: 125px;
+    height: 40px;
+    border-radius: 20px;
+    margin: 5px;
+    font-size: 13px;
+}
+
+input[type=submit]:active,
+input[type=button]:active {
+    filter: brightness(0.7);
+}
+
+input[type=submit] {
+    background-color: #1DB954;
+}
+
+input[type=button] {
+    background-color: #757575;
+}
+
+#created-playlist-embed-iframe {
+    border: 0;
+    height: 60vh;
+    margin: 5px;
+    width: 50vw;
+    min-width: 280px;
+}
+
+/* Increase width for screens over 375px (iPhone 6/7/8) */
+@media only screen and (min-width: 375px) {
+    input[type=text] {
+        width: 330px;
+    }
+}
+
+/* Increase width for screens over 414px (iPhone 6/7/8 Plus) */
+@media only screen and (min-width: 414px) {
+    input[type=text] {
+        width: 380px;
+    }
+}
+
+/* Increase width for screens over 768px (iPad Portrait) */
+@media only screen and (min-width: 768px) {
+    input[type=text] {
+        width: 430px;
+    }
+}
+
+/* Increase width for screens over 1024px (iPad Landscape) */
+@media only screen and (min-width: 1024px) {
+    input[type=text] {
+        width: 480px;
+    }
+}
+
+/* Increase width for screens over 1200px (Desktops) */
+@media only screen and (min-width: 1200px) {
+    input[type=text] {
+        width: 530px;
+    }
+}
+
+/* When a device with an accurate pointer device (i.e. mouse) is used, the buttons will respond on hover */
+@media (pointer:fine) {
+    input[type=submit]:hover,
+    input[type=button]:hover {
+        cursor: pointer;
+        transform: scale(1.02);
+    }
+}

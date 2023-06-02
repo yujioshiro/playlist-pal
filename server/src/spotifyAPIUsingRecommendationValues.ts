@@ -158,7 +158,7 @@ export async function createPlaylistAndAddSongsWithValues ( valuesObject: any, i
         }
         console.log("after:",valuesInJSON.genres[i]);
         if (AVAILABLE_GENRES.indexOf(valuesInJSON.genres[i]) === -1) {
-          console.log(valuesInJSON.genres[i] + " not found in available genres")
+          console.log(valuesInJSON.genres[i] + " not found in available genres.")
         } else {
           console.log(valuesInJSON.genres[i] + " FOUND!");
           spotifyRecommendationValuesEndpointUrl = spotifyRecommendationValuesEndpointUrl + "&seed_genres=" + valuesInJSON.genres[i];

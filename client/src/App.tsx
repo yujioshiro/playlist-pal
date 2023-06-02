@@ -7,6 +7,7 @@ export default function App() {
   const [promptInput, setPromptInput] = useState("");
 
   const API_ENDPOINT: string = import.meta.env.VITE_AWS_LAMBDA_API_ENDPOINT
+  console.log(API_ENDPOINT);
 
   async function onSubmit(event: React.FormEvent) {
     event.preventDefault();

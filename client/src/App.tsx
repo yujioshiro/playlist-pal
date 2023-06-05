@@ -7,8 +7,8 @@ import { GenerateExample } from "./Functions/GenerateExample";
 export default function App() {
   const [promptInput, setPromptInput] = useState("");
 
-  const API_ENDPOINT: string = `${import.meta.env.VITE_API_ENDPOINT}/playlist-pal`;
-  const API_ENDPOINT_SECOND_HANDLER: string = `${import.meta.env.VITE_API_ENDPOINT}/secondHandler`;
+  const API_ENDPOINT: string = `${import.meta.env.VITE_API_ENDPOINT}/initial-songs`;
+  const API_ENDPOINT_SECOND_HANDLER: string = `${import.meta.env.VITE_API_ENDPOINT}/create-playlist`;
 
   console.log(API_ENDPOINT, API_ENDPOINT_SECOND_HANDLER);
 

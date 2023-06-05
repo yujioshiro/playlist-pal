@@ -3,8 +3,8 @@ import { getInitialSongsFromOpenAiChatCompletion, getFourMatchingSongsFromOpenAi
 import { getSongIds, getSongRecommendations, createPlaylist } from './SpotifyAPI';
 
 export async function handler(event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> {
-
-    if (event.path === '/secondHandler') {
+    console.log(event.path);
+    if (event.path === '/create-playlist') {
         console.log("THIS IS RUNNING");
         console.log(event.body);
         return await secondHandler(JSON.parse(event.body!).prompt, JSON.parse(event.body!).song);

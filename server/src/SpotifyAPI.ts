@@ -189,6 +189,6 @@ export async function createPlaylist(prompt: string, songs: string[], imageObjec
     } catch (error) {
     console.log("error:", error);
     }
-
+    console.log(`playlistId: ${createdPlaylistData.id}`);
     return { result: createdPlaylistData.id }
 }

@@ -35,7 +35,7 @@ export async function getFourMatchingSongsFromOpenAiChatCompletion(prompt: strin
         console.log(`Getting four additional songs from GPT using prompt: ${prompt}, artist: ${artist}, and song: ${song}.`);
         const completion = await openai.createChatCompletion({
             model: "gpt-4",
-            messages: [{role:'user', content:`Give 4 songs that aurally match ${song} by ${artist} and fit the prompt: ${prompt}. Vary the artists. Put results in JSON and omit all other text. Example: [{"artist":"artist name","song":"song name"},{"artist":"artist name","song":"song name"},{"artist":"artist name","song":"song name"}]`}],
+            messages: [{role:'user', content:`Give 4 songs that aurally match ${song} by ${artist} and fit the prompt: ${prompt}. Vary the artists but make sure they fall within the same or similar genre. Put results in JSON and omit all other text. Example: [{"artist":"artist name","song":"song name"},{"artist":"artist name","song":"song name"},{"artist":"artist name","song":"song name"}]`}],
             temperature: 0.7,
             max_tokens: 550,
         })

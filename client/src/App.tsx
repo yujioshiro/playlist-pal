@@ -91,7 +91,7 @@ export default function App() {
         // create a button that allows users to select which song to base playlist off of
         let selectButton = document.createElement('button')
         selectButton.innerText = 'select'
-        selectButton.addEventListener('click', e => selectSong(key))
+        selectButton.addEventListener('click', () => selectSong(key))
         newSongOption.appendChild(selectButton)
         initialSongs.appendChild(newSongOption)
     })

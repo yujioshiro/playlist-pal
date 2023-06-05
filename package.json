@@ -1,0 +1,13 @@
+{
+    "name": "playlist-pal",
+    "version": "1.0.0",
+    "scripts": {
+      "client": "cd client && npm run dev",
+      "server": "cd server && npm run build && sls offline start -t",
+      "start": "concurrently \"npm run server\" \"npm run client\""
+    },
+    "devDependencies": {
+      "concurrently": "^7.0.0"
+    }
+  }
+  

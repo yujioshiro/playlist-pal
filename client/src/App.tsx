@@ -8,6 +8,9 @@ export default function App() {
   const [promptInput, setPromptInput] = useState("");
 
   const API_ENDPOINT: string = import.meta.env.VITE_API_ENDPOINT;
+  const API_ENDPOINT_SECOND_HANDLER: string = import.meta.env.VITE_API_ENDPOINT_SECOND_HANDLER;
+
+  console.log(API_ENDPOINT, API_ENDPOINT_SECOND_HANDLER);
 
   //Display example prompt when user clicks on Example button
   function showExample() {
@@ -47,7 +50,7 @@ export default function App() {
         console.log(
           `attempting to build playlist using prompt: ${toPassToGPT}`
         );
-        const response = await fetch(`${API_ENDPOINT}/test`, {
+        const response = await fetch(`${API_ENDPOINT}`, {
           method: "POST",
           headers: {
             "Content-Type": "applications/json",
@@ -102,7 +105,7 @@ export default function App() {
     document.getElementById('initial-songs-container')?.remove()
     console.log(track);
     try {
-        const response = await fetch(`${API_ENDPOINT}/secondHandler`, {
+        const response = await fetch(`${API_ENDPOINT_SECOND_HANDLER}`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

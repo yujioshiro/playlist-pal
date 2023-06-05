@@ -33,8 +33,8 @@ export async function handler(event: APIGatewayProxyEvent): Promise<APIGatewayPr
 
             // GPT-4 will generate 10 songs of varying genres based on that one prompt. These 10 songs are returned to the user so they can select the genre that fits their mood the most
             console.info(`Prompt within index.ts received from App.tsx: ${prompt}`);
-            // let initialSongs = JSON.parse(JSON.parse((await getInitialSongsFromOpenAiChatCompletion(prompt)).result))
-            let initialSongs = JSON.parse('[{"artist":"The Beatles","song":"Here Comes The Sun"},{"artist":"Frank Sinatra","song":"Fly Me To The Moon"},{"artist":"Ella Fitzgerald","song":"Blue Skies"},{"artist":"Israel Kamakawiwoole","song":"Somewhere Over The Rainbow"},{"artist":"Norah Jones","song":"Sunrise"},{"artist":"Coldplay","song":"Viva La Vida"},{"artist":"Johnny Cash","song":"I Walk The Line"},{"artist":"Bob Marley","song":"Three Little Birds"},{"artist":"James Brown","song":"I Got You (I Feel Good)"},{"artist":"John Denver","song":"Take Me Home, Country Roads"}]')
+            let initialSongs = JSON.parse(JSON.parse((await getInitialSongsFromOpenAiChatCompletion(prompt)).result))
+            // let initialSongs = JSON.parse('[{"artist":"The Beatles","song":"Here Comes The Sun"},{"artist":"Frank Sinatra","song":"Fly Me To The Moon"},{"artist":"Ella Fitzgerald","song":"Blue Skies"},{"artist":"Israel Kamakawiwoole","song":"Somewhere Over The Rainbow"},{"artist":"Norah Jones","song":"Sunrise"},{"artist":"Coldplay","song":"Viva La Vida"},{"artist":"Johnny Cash","song":"I Walk The Line"},{"artist":"Bob Marley","song":"Three Little Birds"},{"artist":"James Brown","song":"I Got You (I Feel Good)"},{"artist":"John Denver","song":"Take Me Home, Country Roads"}]')
             console.log(`initialSongs: ${initialSongs}`);
             console.log(`initialSongs Stringified: ${JSON.stringify(initialSongs)}`);
             let songIds = JSON.parse((await getSongIds(initialSongs)).body);
@@ -97,8 +97,8 @@ export async function secondHandler(prompt: string, selectedSong: Track) {
     let song = selectedSong.song;
 
     // console.log(`SELECTED SONG: ${JSON.stringify(selectedSong)}`);
-    // let songsToPassToRecommendationFunction = JSON.parse(JSON.parse((await getFourMatchingSongsFromOpenAiChatCompletion(prompt, artist, song)).result))
-    let songsToPassToRecommendationFunction = JSON.parse('[{"artist":"Jack Johnson","song":"Banana Pancakes"},{"artist":"Corinne Bailey Rae","song":"Put Your Records On"},{"artist":"Jason Mraz","song":"Im Yours"},{"artist":"Sara Bareilles","song":"Love Song"}]')
+    let songsToPassToRecommendationFunction = JSON.parse(JSON.parse((await getFourMatchingSongsFromOpenAiChatCompletion(prompt, artist, song)).result))
+    // let songsToPassToRecommendationFunction = JSON.parse('[{"artist":"Jack Johnson","song":"Banana Pancakes"},{"artist":"Corinne Bailey Rae","song":"Put Your Records On"},{"artist":"Jason Mraz","song":"Im Yours"},{"artist":"Sara Bareilles","song":"Love Song"}]')
     let songIds = JSON.parse((await getSongIds(songsToPassToRecommendationFunction)).body)
     songIds.message.push(selectedSong)
     // console.log(`Result of GetSongIds() at index.secondHandler: ${JSON.stringify(songIds)}`);

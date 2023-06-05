@@ -115,17 +115,18 @@ export default function App() {
                 song: track 
             }),
         });
-        displayPlaylistEmbed((await response.json()).output.result)
+        displayPlaylistEmbed((await response.json()).output)
     } catch(error) {
         console.error(`API request failed with error: ${error}`);
     }
   }
 
-  function displayPlaylistEmbed(playlistID: string) {
+  function displayPlaylistEmbed(playlistId: string) {
+    console.log(playlistId);
     document.getElementById('initial-songs-container')?.remove()
     let playlistEmbed = document.createElement('iframe')
     playlistEmbed.id = 'embedded-playlist'
-    playlistEmbed.src = `https://open.spotify.com/embed/playlist/${playlistID}?utm_source=generator&theme=0`
+    playlistEmbed.src = `https://open.spotify.com/embed/playlist/${playlistId}?utm_source=generator&theme=0`
 
     document.getElementById('initial-songs-container')?.remove()
     document.getElementById('playlist-prompt')?.appendChild(playlistEmbed)

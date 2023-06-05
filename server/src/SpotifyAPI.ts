@@ -97,7 +97,7 @@ export async function getSongRecommendations(songs: Track[]) {
 
     // All 500 songs are put into an array and any song with at least 2 occurences will be put into the final playlist
         for (let track in playlistToCheckForDuplicates) {
-            if (playlistToCheckForDuplicates[track] > 2 && playlistToReturn.size < 50) {
+            if (playlistToCheckForDuplicates[track] > 2 && playlistToReturn.size < 30) {
                 playlistToReturn.add(track)
             }
         }

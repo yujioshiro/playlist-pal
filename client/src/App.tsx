@@ -115,10 +115,22 @@ export default function App() {
                 song: track 
             }),
         });
-        console.log(response);
+        displayPlaylistEmbed((await response.json()).output.result)
     } catch(error) {
         console.error(`API request failed with error: ${error}`);
     }
+  }
+
+  function displayPlaylistEmbed(playlistID: string) {
+    document.getElementById('initial-songs-container')?.remove()
+    let playlistEmbed = document.createElement('iframe')
+    playlistEmbed.id = 'embedded-playlist'
+    playlistEmbed.src = `https://open.spotify.com/embed/playlist/${playlistID}?utm_source=generator&theme=0`
+
+    document.getElementById('initial-songs-container')?.remove()
+    document.getElementById('playlist-prompt')?.appendChild(playlistEmbed)
+
+{/* <iframe style="border-radius:12px"  width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe> */}
   }
 
   return (

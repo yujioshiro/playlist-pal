@@ -113,6 +113,10 @@ input[type=button] {
     width: 300px;
 }
 
+#embedded-playlist {
+    min-height: 500px;
+}
+
 /* Increase width for screens over 375px (iPhone 6/7/8) */
 @media only screen and (min-width: 375px) {
     input[type=text] {

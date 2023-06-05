@@ -33,6 +33,10 @@ export async function handler(event: APIGatewayProxyEvent): Promise<APIGatewayPr
             console.log(`Result of GetSongIds() at index.handler: ${JSON.stringify(songIds)}`);
             return {
                 statusCode: 200,
+                headers: {
+                    'Access-Control-Allow-Origin': '*', // Replace * with the desired origin or leave it as * to allow requests from any origin
+                    'Access-Control-Allow-Headers': 'Content-Type', // Add any additional headers that are allowed in the request
+                  },
                 body: JSON.stringify({
                     output: songIds.message,
                 })

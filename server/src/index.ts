@@ -107,7 +107,7 @@ export async function secondHandler(prompt: string, selectedSong: Track) {
     return {
         statusCode: 200,
         headers: {
-            'Access-Control-Allow-Origin': '*', 
+            'Access-Control-Allow-Origin': 'https://playlistpal.yujioshiro.com',
             'Access-Control-Allow-Headers': 'Content-Type',
         },
         body: JSON.stringify({

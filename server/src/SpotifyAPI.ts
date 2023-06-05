@@ -1,5 +1,4 @@
 import { config as dotenvConfig } from 'dotenv';
-import { clearScreenDown } from 'readline';
 import sharp from 'sharp'
 
 dotenvConfig();

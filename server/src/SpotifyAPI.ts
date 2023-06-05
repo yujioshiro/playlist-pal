@@ -176,19 +176,20 @@ export async function createPlaylist(prompt: string, songs: string[], imageObjec
     
     const base64data = resizedImageBuffer.toString('base64');
     // console.log("base64data", base64data);
-    try {
-    const uploadedImageResponse = await fetch(`https://api.spotify.com/v1/playlists/${createdPlaylistData.id}/images`, {
-        method: "PUT",
-        headers: {
-        Authorization: `Bearer ${accessToken}`,
-        "Content-Type": "image/jpeg",
-        },
-        body: base64data,
-    });
-    // console.log("uploadedImageResponse:", uploadedImageResponse);
+        try {
+        const uploadedImageResponse = await fetch(`https://api.spotify.com/v1/playlists/${createdPlaylistData.id}/images`, {
+            method: "PUT",
+            headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "image/jpeg",
+            },
+            body: base64data,
+        });
+        // console.log("uploadedImageResponse:", uploadedImageResponse);
     } catch (error) {
-    console.log("error:", error);
+        console.log("error:", error);
     }
+    
     console.log(`playlistId: ${createdPlaylistData.id}`);
     return { result: createdPlaylistData.id }
 }

@@ -34,7 +34,7 @@ export async function handler(event: APIGatewayProxyEvent): Promise<APIGatewayPr
             return {
                 statusCode: 200,
                 headers: {
-                    'Access-Control-Allow-Origin': 'http://localhost:5173, https://playlistpal.yujioshiro.com',
+                    'Access-Control-Allow-Origin': '*',
                     'Access-Control-Allow-Headers': 'Content-Type',
                   },
                 body: JSON.stringify({
@@ -107,7 +107,7 @@ export async function secondHandler(prompt: string, selectedSong: Track) {
     return {
         statusCode: 200,
         headers: {
-            'Access-Control-Allow-Origin': 'http://localhost:5173, https://playlistpal.yujioshiro.com', 
+            'Access-Control-Allow-Origin': '*', 
             'Access-Control-Allow-Headers': 'Content-Type',
         },
         body: JSON.stringify({

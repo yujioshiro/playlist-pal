@@ -156,7 +156,7 @@ export async function createPlaylist(prompt: string, songs: string[], imageObjec
 }
 
 export async function addSongsToPlaylist(songs: string[], playlistId: string, accessToken: string) {
-    for (let song in songs) {
+    for (let song of songs) {
         console.log(`song: ${song}`);
         await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks?uris=spotify:track:${song}`, {
             method: "POST",

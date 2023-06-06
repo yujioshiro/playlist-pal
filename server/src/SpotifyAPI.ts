@@ -146,7 +146,7 @@ export async function createPlaylist(prompt: string, songs: string[], imageObjec
     ); 
 
     const createdPlaylistData = await createdPlaylistResponse.json()
-    Promise.all([
+    await Promise.all([
         addSongsToPlaylist(songs, createdPlaylistData.id, accessToken),
         uploadPlaylistCoverImage(imageObject, createdPlaylistData.id, accessToken)
     ])

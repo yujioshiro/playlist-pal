@@ -29,9 +29,17 @@ export default function App() {
   // When a user clicks on the generate button, the app will initially display the first 10 songs 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    
+    // disable buttons and notify user the base songs are being generated
+    (document.getElementById('example-button') as HTMLButtonElement).disabled = true;
+    (document.getElementById('submit-button') as HTMLButtonElement).disabled = true;
+    document.getElementById('embedded-playlist')?.remove();
+    let notification = document.createElement('p')
+    notification.innerText = 'Generating base songs...'
+    document.getElementById('playlist-prompt')?.appendChild(notification)
+
     const userInput = document.getElementById("prompt-input") as HTMLElement;
     let toPassToGPT = (userInput as HTMLInputElement).value;
-
     // check for blank user input
     if (
       toPassToGPT === "" &&
@@ -57,9 +65,10 @@ export default function App() {
           },
           body: JSON.stringify({ prompt: toPassToGPT }),
         });
-
+        notification.remove()
         displayInitialSongs(JSON.parse((await response.json()).output))
         console.info('The initial onSubmit function has completed.');
+
       } catch (error: any) {
         console.error(`The API returned: ${error}`);
       }
@@ -103,6 +112,9 @@ export default function App() {
 
   async function selectSong(track: Track) {
     document.getElementById('initial-songs-container')?.remove()
+    let notification = document.createElement('p')
+    notification.innerText = 'Creating playlist...'
+    document.getElementById('playlist-prompt')?.appendChild(notification)
     console.log(track);
     try {
         const response = await fetch(`${API_ENDPOINT_SECOND_HANDLER}`, {
@@ -115,7 +127,10 @@ export default function App() {
                 song: track 
             }),
         });
-        displayPlaylistEmbed((await response.json()).output)
+        const responseTest = (await response.json()).output
+        console.log(`${typeof responseTest}, ${responseTest}`);
+        displayPlaylistEmbed(responseTest)
+        notification.remove()
     } catch(error) {
         console.error(`API request failed with error: ${error}`);
     }
@@ -126,10 +141,13 @@ export default function App() {
     document.getElementById('initial-songs-container')?.remove()
     let playlistEmbed = document.createElement('iframe')
     playlistEmbed.id = 'embedded-playlist'
-    playlistEmbed.src = `https://open.spotify.com/embed/playlist/${playlistId}?utm_source=generator&theme=0`
-
-    document.getElementById('initial-songs-container')?.remove()
-    document.getElementById('playlist-prompt')?.appendChild(playlistEmbed)
+    setTimeout(() => {
+      playlistEmbed.src = `https://open.spotify.com/embed/playlist/${playlistId}?utm_source=generator&theme=0`
+      document.getElementById('initial-songs-container')?.remove()
+      document.getElementById('playlist-prompt')?.appendChild(playlistEmbed);
+      (document.getElementById('example-button') as HTMLButtonElement).disabled = false;
+      (document.getElementById('submit-button') as HTMLButtonElement).disabled = false;
+    }, 5000)
 
 {/* <iframe style="border-radius:12px"  width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe> */}
   }

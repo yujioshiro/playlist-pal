@@ -113,7 +113,7 @@ export async function getSongRecommendations(songs: Track[]) {
 }
 
 export async function createPlaylist(prompt: string, songs: string[], imageObject: any) {
-
+    console.log(typeof songs);
     console.log(`Adding these song ids: ${songs}`);
 
     // Get new accessToken which allows us to fetch data from the Spotify API

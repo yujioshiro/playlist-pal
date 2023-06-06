@@ -97,7 +97,7 @@ export async function getSongRecommendations(songs: Track[]) {
 
     // All 500 songs are put into an array and any song with at least 2 occurences will be put into the final playlist
         for (let track in playlistToCheckForDuplicates) {
-            if (playlistToCheckForDuplicates[track] > 2 && playlistToReturn.size < 30) {
+            if (playlistToCheckForDuplicates[track] > 3 && playlistToReturn.size < 50) {
                 playlistToReturn.add(track)
             }
         }
@@ -144,52 +144,59 @@ export async function createPlaylist(prompt: string, songs: string[], imageObjec
     ); 
 
     const createdPlaylistData = await createdPlaylistResponse.json()
+    Promise.all([
+        addSongsToPlaylist(songs, createdPlaylistData.id, accessToken),
+        uploadPlaylistCoverImage(imageObject, createdPlaylistData.id, accessToken)
+    ])
+    
+    console.log(`playlistId: ${createdPlaylistData.id}`);
+    return { result: createdPlaylistData.id }
+}
 
+export async function addSongsToPlaylist(songs: string[], playlistId: string, accessToken: string) {
     for (let song of songs) {
         // console.log(`song: ${song}`);
-        await fetch(`https://api.spotify.com/v1/playlists/${createdPlaylistData.id}/tracks?uris=spotify:track:${song}`, {
+        await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks?uris=spotify:track:${song}`, {
             method: "POST",
             headers: {
                 Authorization: `Bearer ${accessToken}`
             }
         });
     }
+}
 
-    //upload image
-    console.log("attempting image upload");
-    const imageResponse = await fetch(imageObject.result);
-    console.log("Converted imageObject to imageResponse...");
-    const blob = await imageResponse.blob();
-    console.log("converted imageResponse to blob...");
-      
-    // Resize the image
-    const MAX_WIDTH = 300; // Set the maximum width for the resized image
-    const MAX_HEIGHT = 300; // Set the maximum height for the resized image
-    
-    const buffer = Buffer.from(await blob.arrayBuffer());
-    
-    const resizedImageBuffer = await sharp(buffer)
-    .resize(MAX_WIDTH, MAX_HEIGHT, { fit: 'inside' })
-    .jpeg({ quality: 80 }) // Adjust the quality value to reduce the file size
-    .toBuffer();
-
-    
-    const base64data = resizedImageBuffer.toString('base64');
-    // console.log("base64data", base64data);
-        try {
-        const uploadedImageResponse = await fetch(`https://api.spotify.com/v1/playlists/${createdPlaylistData.id}/images`, {
-            method: "PUT",
-            headers: {
-            Authorization: `Bearer ${accessToken}`,
-            "Content-Type": "image/jpeg",
-            },
-            body: base64data,
-        });
-        // console.log("uploadedImageResponse:", uploadedImageResponse);
-    } catch (error) {
-        console.log("error:", error);
-    }
-    
-    console.log(`playlistId: ${createdPlaylistData.id}`);
-    return { result: createdPlaylistData.id }
+export async function uploadPlaylistCoverImage(imageObject: any, playlistId: string, accessToken: string) {
+     //upload image
+     console.log("attempting image upload");
+     const imageResponse = await fetch(imageObject.result);
+     console.log("Converted imageObject to imageResponse...");
+     const blob = await imageResponse.blob();
+     console.log("converted imageResponse to blob...");
+       
+     // Resize the image
+     const MAX_WIDTH = 300; // Set the maximum width for the resized image
+     const MAX_HEIGHT = 300; // Set the maximum height for the resized image
+     
+     const buffer = Buffer.from(await blob.arrayBuffer());
+     
+     const resizedImageBuffer = await sharp(buffer)
+     .resize(MAX_WIDTH, MAX_HEIGHT, { fit: 'inside' })
+     .jpeg({ quality: 80 }) // Adjust the quality value to reduce the file size
+     .toBuffer();
+ 
+     
+     const base64data = resizedImageBuffer.toString('base64');
+     // console.log("base64data", base64data);
+         try {
+         fetch(`https://api.spotify.com/v1/playlists/${playlistId}/images`, {
+             method: "PUT",
+             headers: {
+             Authorization: `Bearer ${accessToken}`,
+             "Content-Type": "image/jpeg",
+             },
+             body: base64data,
+         });
+     } catch (error) {
+         console.log("error:", error);
+     }
 }

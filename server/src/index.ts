@@ -14,7 +14,7 @@ export async function handler(event: APIGatewayProxyEvent): Promise<APIGatewayPr
                 'Access-Control-Allow-Headers': 'Content-Type',
             },
             body: JSON.stringify({
-                output: (await secondHandler(JSON.parse(event.body!).prompt, JSON.parse(event.body!).song)),
+                output: await secondHandler(JSON.parse(event.body!).prompt, JSON.parse(event.body!).song),
             })
         }
     }
@@ -109,11 +109,9 @@ export async function secondHandler(prompt: string, selectedSong: Track) {
     let songRecs: string[] = (JSON.parse((await getSongRecommendations(songIds.message)).body)).message
 
     // Once the playlist has at least 30 songs (but under 40), it is built with Spotify and the playlist ID is returned to the client. The app should check that there are at least 30 songs before sending the ID.
-    let imageObject = await getImageFromOpenAi(prompt)
+    let playlistId = await createPlaylist(prompt, songRecs, await getImageFromOpenAi(prompt))
 
-    let playlistId = await createPlaylist(prompt, songRecs, imageObject)
-
-    console.log(typeof playlistId);
+    console.log(typeof playlistId.result);
     console.log(playlistId);
 
     return  playlistId.result 

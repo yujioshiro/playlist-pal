@@ -13,8 +13,7 @@ const clientId: string = process.env.SPOTIFY_CLIENT_ID!;
 const clientSecret: string = process.env.SPOTIFY_CLIENT_SECRET!;
 const refreshToken: string = process.env.SPOTIFY_REFRESH_TOKEN!;
 
-export async function getSongIds(songs: Track[]) {
-
+export async function getAccessToken() {
     // Get new accessToken which allows us to fetch data from the Spotify API
     let accessTokenWithPublicScopeResponse = await fetch(`https://accounts.spotify.com/api/token`, {
         method: 'POST',
@@ -24,8 +23,10 @@ export async function getSongIds(songs: Track[]) {
         },
         body: `grant_type=refresh_token&refresh_token=${encodeURIComponent(refreshToken)}`,
     })
-    const accessToken: string = (await accessTokenWithPublicScopeResponse.json()).access_token
-    // console.log("Retrieved Access Token:", accessToken);
+    return (await accessTokenWithPublicScopeResponse.json()).access_token
+}
+
+export async function getSongIds(songs: Track[], accessToken: string) {
 
     // convert the songs into an object of song objects
     let songsToReturn = []
@@ -55,21 +56,10 @@ export async function getSongIds(songs: Track[]) {
     }
 }
 
-export async function getSongRecommendations(songs: Track[]) {
+export async function getSongRecommendations(songs: Track[], accessToken: string) {
+    console.log(accessToken);
     let playlistToCheckForDuplicates: { [songId: string]: number } = {}
     const playlistToReturn = new Set()
-
-     // Get new accessToken which allows us to fetch data from the Spotify API
-     let accessTokenWithPublicScopeResponse = await fetch(`https://accounts.spotify.com/api/token`, {
-        method: 'POST',
-        headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString('base64')}`,
-        },
-        body: `grant_type=refresh_token&refresh_token=${encodeURIComponent(refreshToken)}`,
-    })
-    const accessToken: string = (await accessTokenWithPublicScopeResponse.json()).access_token
-    console.log("Retrieved Access Token:", accessToken);
 
     // If the final playlist does not have at least 30 songs, we repeat the song recommendations or the 4 song generation
     while (playlistToReturn.size < 30) {
@@ -112,21 +102,9 @@ export async function getSongRecommendations(songs: Track[]) {
     }
 }
 
-export async function createPlaylist(prompt: string, songs: string[], imageObject: any) {
+export async function createPlaylist(prompt: string, songs: string[], imageObject: any, accessToken: string) {
     console.log(typeof songs);
     console.log(`Adding these song ids: ${songs}`);
-
-    // Get new accessToken which allows us to fetch data from the Spotify API
-    let accessTokenWithPublicScopeResponse = await fetch(`https://accounts.spotify.com/api/token`, {
-        method: 'POST',
-        headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString('base64')}`,
-        },
-        body: `grant_type=refresh_token&refresh_token=${encodeURIComponent(refreshToken)}`,
-    })
-    const accessToken: string = (await accessTokenWithPublicScopeResponse.json()).access_token
-    // console.log("Retrieved Access Token:", accessToken);
 
     // create new playlist
     const requestBody = {

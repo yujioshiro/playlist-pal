@@ -10,8 +10,6 @@ export default function App() {
   const API_ENDPOINT: string = `${import.meta.env.VITE_API_ENDPOINT}/initial-songs`;
   const API_ENDPOINT_SECOND_HANDLER: string = `${import.meta.env.VITE_API_ENDPOINT}/create-playlist`;
 
-  console.log(API_ENDPOINT, API_ENDPOINT_SECOND_HANDLER);
-
   //Display example prompt when user clicks on Example button
   function showExample() {
     const userInput = document.getElementById("prompt-input") as HTMLElement;
@@ -29,6 +27,13 @@ export default function App() {
   // When a user clicks on the generate button, the app will initially display the first 10 songs 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    // Get accessToken from storage if available
+    let accessToken: string = 'NEEDS TOKEN'
+    if (localStorage.getItem('dateReceived') && Date.now() - parseInt(localStorage.getItem('dateReceived') as string) < 3_000_000) {
+      accessToken = localStorage.getItem('accessToken') as string
+    }
+    console.log(accessToken);
     
     // disable buttons and notify user the base songs are being generated
     (document.getElementById('example-button') as HTMLButtonElement).disabled = true;
@@ -63,10 +68,14 @@ export default function App() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ prompt: toPassToGPT }),
+          body: JSON.stringify({ prompt: toPassToGPT, accessToken: accessToken }),
         });
         notification.remove()
-        displayInitialSongs(JSON.parse((await response.json()).output))
+
+        let responseJSON = await response.json()
+        localStorage.setItem('accessToken', responseJSON.accessToken)
+        localStorage.setItem('dateReceived', String(Date.now()))
+        displayInitialSongs(JSON.parse(responseJSON.output))
         console.info('The initial onSubmit function has completed.');
 
       } catch (error: any) {
@@ -111,6 +120,10 @@ export default function App() {
   }
 
   async function selectSong(track: Track) {
+
+    // Get accessToken from storage if available
+    let accessToken: string = localStorage.getItem('accessToken') as string
+
     document.getElementById('initial-songs-container')?.remove()
     let notification = document.createElement('p')
     notification.innerText = 'Creating playlist...'
@@ -124,11 +137,11 @@ export default function App() {
             },
             body: JSON.stringify({ 
                 prompt: (document.getElementById("prompt-input") as HTMLInputElement).value,
-                song: track 
+                song: track,
+                accessToken: accessToken,
             }),
         });
         const responseTest = (await response.json()).output
-        console.log(`${typeof responseTest}, ${responseTest}`);
         displayPlaylistEmbed(responseTest)
         notification.remove()
     } catch(error) {

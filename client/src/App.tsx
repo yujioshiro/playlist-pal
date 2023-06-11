@@ -151,7 +151,6 @@ export default function App() {
         // console.log(image);
 
         let finalPlaylistId: string = await createPlaylist(prompt, songs, responseFromLambda[1].result)
-        console.log(finalPlaylistId);
         displayPlaylistEmbed(finalPlaylistId)
         notification.remove()
     } catch(error) {
@@ -164,13 +163,11 @@ export default function App() {
     document.getElementById('initial-songs-container')?.remove()
     let playlistEmbed = document.createElement('iframe')
     playlistEmbed.id = 'embedded-playlist'
-    setTimeout(() => {
-      playlistEmbed.src = `https://open.spotify.com/embed/playlist/${playlistId}?utm_source=generator&theme=0`
-      document.getElementById('initial-songs-container')?.remove()
-      document.getElementById('playlist-prompt')?.appendChild(playlistEmbed);
-      (document.getElementById('example-button') as HTMLButtonElement).disabled = false;
-      (document.getElementById('submit-button') as HTMLButtonElement).disabled = false;
-    }, 5000)
+    playlistEmbed.src = `https://open.spotify.com/embed/playlist/${playlistId}?utm_source=generator&theme=0`
+    document.getElementById('initial-songs-container')?.remove()
+    document.getElementById('playlist-prompt')?.appendChild(playlistEmbed);
+    (document.getElementById('example-button') as HTMLButtonElement).disabled = false;
+    (document.getElementById('submit-button') as HTMLButtonElement).disabled = false;
 
 {/* <iframe style="border-radius:12px"  width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe> */}
   }

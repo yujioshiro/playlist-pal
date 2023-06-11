@@ -124,7 +124,7 @@ export async function secondHandler(prompt: string, selectedSong: Track) {
     // console.log(typeof playlistId.result);
     // console.log(playlistId);
 
-    let imageObject = await getImageFromOpenAi(prompt)
+    let imageObject = await getImageFromOpenAi(prompt, artist)
 
     return  [songsToPassToRecommendation, imageObject]
 }

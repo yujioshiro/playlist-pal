@@ -48,10 +48,10 @@ export async function getFourMatchingSongsFromOpenAiChatCompletion(prompt: strin
     }
 }
 
-export async function getImageFromOpenAi(prompt: string) {
+export async function getImageFromOpenAi(prompt: string, artist: string) {
     try {
       const response = await openai.createImage({
-        prompt: `faceless,humanless,leica m3,50mm f2.0,natural lighting,nautral colors,vibes,scene,${prompt}`,
+        prompt: `faceless,humanless,leica m3,50mm f2.0,natural lighting,nautral colors,vibes,${artist} visuals,scene,${prompt}`,
         n: 1,
         size: "512x512",
       })

@@ -15,7 +15,7 @@ export async function getInitialSongsFromOpenAiChatCompletion(prompt: string): P
         console.log(`Getting initial songs from GPT using ${prompt}`);
         const completion = await openai.createChatCompletion({
             model: "gpt-4",
-            messages: [{role:'user', content:`Give 10 songs from different genres that match this prompt: ${prompt}.Put results in JSON and omit all other text. The list should containt at least one song from old pop, new pop, old hip-hop, new hip-hop. Example: [{"artist":"artist name","song":"song name"},{"artist":"artist name","song":"song name"},{"artist":"artist name","song":"song name"}]`}],
+            messages: [{role:'user', content:`Give 10 songs from different genres that match this prompt: ${prompt}.Put results in JSON and omit all other text.Example: [{"artist":"artist name","song":"song name"},{"artist":"artist name","song":"song name"},{"artist":"artist name","song":"song name"}]`}],
             temperature: 0.7,
             max_tokens: 750,
         })
@@ -35,7 +35,7 @@ export async function getFourMatchingSongsFromOpenAiChatCompletion(prompt: strin
         console.log(`Getting four additional songs from GPT using prompt: ${prompt}, artist: ${artist}, and song: ${song}.`);
         const completion = await openai.createChatCompletion({
             model: "gpt-4",
-            messages: [{role:'user', content:`Give 4 songs that aurally match ${song} by ${artist} and fit the prompt: ${prompt}. Vary the artists but make sure they fall within the same or similar genre. Put results in JSON and omit all other text. Example: [{"artist":"artist name","song":"song name"},{"artist":"artist name","song":"song name"},{"artist":"artist name","song":"song name"}]`}],
+            messages: [{role:'user', content:`Give 4 songs that aurally match ${song} by ${artist} and fit the prompt: ${prompt}. Make sure all songs are same or similar genre. Put results in JSON and omit all other text. Example: [{"artist":"artist name","song":"song name"},{"artist":"artist name","song":"song name"},{"artist":"artist name","song":"song name"}]`}],
             temperature: 0.7,
             max_tokens: 550,
         })

@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { ShakeAnimation } from "./Functions/ShakeAnimationEvent";
 import { GenerateExample } from "./Functions/GenerateExample";
-import { createPlaylist, getSongIds, getSongRecommendations } from "./Functions/SpotifyAPI";
+import { getAccessToken, createPlaylist, getSongIds, getSongRecommendations } from "./Functions/SpotifyAPI";
 
 
 export default function App() {
@@ -29,6 +29,17 @@ export default function App() {
   // When a user clicks on the generate button, the app will initially display the first 10 songs 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    // Get accessToken from storage if available
+    let accessToken: string = 'NEEDS TOKEN'
+    if (localStorage.getItem('dateReceived') && Date.now() - parseInt(localStorage.getItem('dateReceived') as string) < 3_000_000) {
+        accessToken = localStorage.getItem('accessToken') as string
+    } else {
+        accessToken = await getAccessToken()
+        localStorage.setItem('accessToken', accessToken)
+        localStorage.setItem('dateReceived', String(Date.now()))
+    }
+    console.log(accessToken);
     
     // disable buttons and notify user the base songs are being generated
     (document.getElementById('example-button') as HTMLButtonElement).disabled = true;

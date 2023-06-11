@@ -8,17 +8,8 @@ const clientId: string = import.meta.env.VITE_SPOTIFY_CLIENT_ID!;
 const clientSecret: string = import.meta.env.VITE_SPOTIFY_CLIENT_SECRET!;
 const refreshToken: string = import.meta.env.VITE_SPOTIFY_REFRESH_TOKEN!;
 const API_ENDPOINT_CREATE_PLAYLIST: string = `${import.meta.env.VITE_API_ENDPOINT}/create-playlist`;
+const accessToken = localStorage.getItem('accessToken')
 
-// Get accessToken from storage if available
-let accessToken: string = 'NEEDS TOKEN'
-if (localStorage.getItem('dateReceived') && Date.now() - parseInt(localStorage.getItem('dateReceived') as string) < 3_000_000) {
-    accessToken = localStorage.getItem('accessToken') as string
-} else {
-    accessToken = await getAccessToken()
-    localStorage.setItem('accessToken', accessToken)
-    localStorage.setItem('dateReceived', String(Date.now()))
-}
-console.log(accessToken);
 
 export async function getAccessToken() {
     // Get new accessToken which allows us to fetch data from the Spotify API
@@ -34,7 +25,6 @@ export async function getAccessToken() {
 }
 
 export async function getSongIds(songs: Track[]) {
-
     // convert the songs into an object of song objects
     let songsToReturn = []
     for (let song of songs) {

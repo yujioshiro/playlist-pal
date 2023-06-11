@@ -2,13 +2,15 @@ import { useState } from "react";
 
 import { ShakeAnimation } from "./Functions/ShakeAnimationEvent";
 import { GenerateExample } from "./Functions/GenerateExample";
+import { createPlaylist, getSongIds, getSongRecommendations } from "./Functions/SpotifyAPI";
 
 
 export default function App() {
   const [promptInput, setPromptInput] = useState("");
 
-  const API_ENDPOINT: string = `${import.meta.env.VITE_API_ENDPOINT}/initial-songs`;
-  const API_ENDPOINT_SECOND_HANDLER: string = `${import.meta.env.VITE_API_ENDPOINT}/create-playlist`;
+  const API_ENDPOINT_INDEX: string = `${import.meta.env.VITE_API_ENDPOINT}/initial-songs`;
+  const API_ENDPOINT_GET_BASE_SONGS: string = `${import.meta.env.VITE_API_ENDPOINT}/get-base-songs`;
+
 
   //Display example prompt when user clicks on Example button
   function showExample() {
@@ -27,13 +29,6 @@ export default function App() {
   // When a user clicks on the generate button, the app will initially display the first 10 songs 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-
-    // Get accessToken from storage if available
-    let accessToken: string = 'NEEDS TOKEN'
-    if (localStorage.getItem('dateReceived') && Date.now() - parseInt(localStorage.getItem('dateReceived') as string) < 3_000_000) {
-      accessToken = localStorage.getItem('accessToken') as string
-    }
-    console.log(accessToken);
     
     // disable buttons and notify user the base songs are being generated
     (document.getElementById('example-button') as HTMLButtonElement).disabled = true;
@@ -63,27 +58,22 @@ export default function App() {
         console.log(
           `attempting to build playlist using prompt: ${toPassToGPT}`
         );
-        const response = await fetch(`${API_ENDPOINT}`, {
+        const response = await fetch(`${API_ENDPOINT_INDEX}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ prompt: toPassToGPT, accessToken: accessToken }),
+          body: JSON.stringify({ prompt: toPassToGPT }),
         });
+
         notification.remove()
-
-        let responseJSON = await response.json()
-        localStorage.setItem('accessToken', responseJSON.accessToken)
-        localStorage.setItem('dateReceived', String(Date.now()))
-        displayInitialSongs(JSON.parse(responseJSON.output))
+        displayInitialSongs(JSON.parse((await getSongIds((await response.json()).output)).body).message)
         console.info('The initial onSubmit function has completed.');
-
       } catch (error: any) {
         console.error(`The API returned: ${error}`);
       }
     }
   }
-
 
   type Track = {
     artist: string;
@@ -120,29 +110,38 @@ export default function App() {
   }
 
   async function selectSong(track: Track) {
-
-    // Get accessToken from storage if available
-    let accessToken: string = localStorage.getItem('accessToken') as string
-
     document.getElementById('initial-songs-container')?.remove()
     let notification = document.createElement('p')
     notification.innerText = 'Creating playlist...'
     document.getElementById('playlist-prompt')?.appendChild(notification)
     console.log(track);
+
+    let prompt = (document.getElementById("prompt-input") as HTMLInputElement).value
     try {
-        const response = await fetch(`${API_ENDPOINT_SECOND_HANDLER}`, {
+        const BASE_SONGS_RESPONSE = await fetch(`${API_ENDPOINT_GET_BASE_SONGS}`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({ 
-                prompt: (document.getElementById("prompt-input") as HTMLInputElement).value,
-                song: track,
-                accessToken: accessToken,
+                prompt: prompt,
+                song: track
             }),
         });
-        const responseTest = (await response.json()).output
-        displayPlaylistEmbed(responseTest)
+        let responseFromLambda = (await BASE_SONGS_RESPONSE.json()).output           
+
+        let songs = JSON.parse((await getSongIds(responseFromLambda[0])).body).message
+        songs.push(track)
+        console.log(`songsIds: ${JSON.stringify(songs)}`);
+        songs = JSON.parse((await getSongRecommendations(songs)).body).message
+        console.log(songs);
+
+        // let image = responseFromLambda[1].result;
+        // console.log(image);
+
+        let finalPlaylistId: string = await createPlaylist(prompt, songs, responseFromLambda[1].result)
+        console.log(finalPlaylistId);
+        displayPlaylistEmbed(finalPlaylistId)
         notification.remove()
     } catch(error) {
         console.error(`API request failed with error: ${error}`);

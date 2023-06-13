@@ -11,7 +11,8 @@ Create Spotify playlists based on any event or mood!
 - **React/TypeScript**, deployed to **Netlify**
 - **GitHub Action** initiates a workflow that zips and deploys the **Lambda Functions** to **AWS**
 - Access to the Lambda Function is done through an AWS **API Gateway**
-
+- **OpenAI API** (GPT-4) suggests songs based on the entered prompt
+- **Spotify Web API** is used to recommend more songs and build the playlist
 
 <!-- ### Why?
 I really enjoy discovering and sharing music. I've been casually hunting for "undiscovered" artists/songs since I was young. I think it started with MySpace profile songs and the desire to have a unique song. Since then, I've shared countless songs and artists with friends and I'm sure many of my Facebook messages are YouTube and Soundcloud links. The rise in popularity of Spotify allowed me to forego burning CDs and allowed me to build playlists for friends, parties, and other events. It even allowed my friends and I to collab on playlists, in which I usually make a majority of the contributions on. 

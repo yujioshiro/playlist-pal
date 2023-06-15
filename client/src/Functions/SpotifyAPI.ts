@@ -8,8 +8,6 @@ const clientId: string = import.meta.env.VITE_SPOTIFY_CLIENT_ID!;
 const clientSecret: string = import.meta.env.VITE_SPOTIFY_CLIENT_SECRET!;
 const refreshToken: string = import.meta.env.VITE_SPOTIFY_REFRESH_TOKEN!;
 const API_ENDPOINT_CREATE_PLAYLIST: string = `${import.meta.env.VITE_API_ENDPOINT}/create-playlist`;
-const accessToken = localStorage.getItem('accessToken')
-
 
 export async function getAccessToken() {
     // Get new accessToken which allows us to fetch data from the Spotify API
@@ -24,6 +22,10 @@ export async function getAccessToken() {
     return (await accessTokenWithPublicScopeResponse.json()).access_token
 }
 
+export function getStoredAccessToken() {
+    return localStorage.getItem('accessToken');
+}
+
 export async function getSongIds(songs: Track[]) {
     // convert the songs into an object of song objects
     let songsToReturn = []
@@ -34,7 +36,7 @@ export async function getSongIds(songs: Track[]) {
             let searchedSong = await fetch(`https://api.spotify.com/v1/search?q=${encodeURIComponent(`track:${(song.song).normalize("NFD").replace(/\p{Diacritic}/gu, "").replace(/ &/g, "")} artist:${(song.artist).normalize("NFD").replace(/\p{Diacritic}/gu, "").replace(/ &/g, "")}`)}&type=track&offset=0&limit=1`, {
                 method: 'GET',
                 headers: {
-                    Authorization: `Bearer ${accessToken}`,
+                    Authorization: `Bearer ${getStoredAccessToken()}`,
                     'Content-Type': 'application/json'
                 },
             })
@@ -64,7 +66,7 @@ export async function getSongRecommendations(songs: Track[]) {
             let songRecommendationsFromSpotifyAPI = await fetch(`https://api.spotify.com/v1/recommendations?limit=100&seed_tracks=${song.id}`, {
                 method: 'GET',
                 headers: {
-                    Authorization: `Bearer ${accessToken}`
+                    Authorization: `Bearer ${getStoredAccessToken()}`
                 }
             })
 
@@ -99,7 +101,7 @@ export async function getSongRecommendations(songs: Track[]) {
 }
 
 export async function createPlaylist(prompt: string, songs: string[], image: string) {
-    console.log(`accessToken: ${accessToken}`);
+    console.log(`accessToken: ${getStoredAccessToken()}`);
     let response = await fetch(`${API_ENDPOINT_CREATE_PLAYLIST}`, {
         method: "POST",
         headers: {
@@ -108,7 +110,7 @@ export async function createPlaylist(prompt: string, songs: string[], image: str
         body: JSON.stringify({ 
             prompt: prompt,
             songs: songs,
-            accessToken: accessToken,
+            accessToken: getStoredAccessToken(),
             image: image,
         }),
     });

@@ -1,5 +1,4 @@
 # Playlist Pal
-Create Spotify playlists based on any event or mood!
 
 ### How it works
 1. Type in an event you're attending or a mood you're feeling.

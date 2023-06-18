@@ -101,7 +101,7 @@ export async function getSongRecommendations(songs: Track[]) {
 }
 
 export async function createPlaylist(prompt: string, songs: string[], image: string) {
-    console.log(`accessToken: ${getStoredAccessToken()}`);
+    prompt = prompt.toLocaleLowerCase()
     let response = await fetch(`${API_ENDPOINT_CREATE_PLAYLIST}`, {
         method: "POST",
         headers: {

@@ -40,14 +40,6 @@ export default function App() {
         localStorage.setItem('dateReceived', String(Date.now()))
     }
     console.log(accessToken);
-    
-    // disable buttons and notify user the base songs are being generated
-    (document.getElementById('example-button') as HTMLButtonElement).disabled = true;
-    (document.getElementById('submit-button') as HTMLButtonElement).disabled = true;
-    document.getElementById('embedded-playlist')?.remove();
-    let notification = document.createElement('p')
-    notification.innerText = 'Generating base songs...'
-    document.getElementById('playlist-prompt')?.appendChild(notification)
 
     const userInput = document.getElementById("prompt-input") as HTMLElement;
     let toPassToGPT = (userInput as HTMLInputElement).value;
@@ -58,6 +50,14 @@ export default function App() {
     ) {
       ShakeAnimation(userInput);
     } else {
+      // disable buttons and notify user the base songs are being generated
+      (document.getElementById('example-button') as HTMLButtonElement).disabled = true;
+      (document.getElementById('submit-button') as HTMLButtonElement).disabled = true;
+      document.getElementById('embedded-playlist')?.remove();
+      let notification = document.createElement('p')
+      notification.innerText = 'Generating base songs...'
+      document.getElementById('playlist-prompt')?.appendChild(notification)
+
       if (toPassToGPT === "") {
         toPassToGPT = (userInput as HTMLInputElement).placeholder;
         //for visual purposes

@@ -184,13 +184,15 @@ export default function App() {
                     onChange={(e) => setPromptInput(e.target.value)}
                     placeholder="what are we up to today?"
                 />
-                <input
-                    type="button"
-                    id="example-button"
-                    onClick={showExample}
-                    value="Example"
-                />
-                <input id="submit-button" type="submit" value="Generate" />
+                <div id="buttons">
+                  <input
+                      type="button"
+                      id="example-button"
+                      onClick={showExample}
+                      value="Example"
+                  />
+                  <input id="submit-button" type="submit" value="Generate" />
+                </div>
             </form>
         </section>
     </div>

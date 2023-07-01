@@ -1,6 +1,7 @@
 * {
     font-family: system-ui, sans-serif;
     color:#FFF;
+    -webkit-appearance: none;
 }
 
 body {
@@ -34,26 +35,50 @@ form {
 button {
     color: black;
     height: 50%;
-    margin: 5px;
+    margin: 7px 5px;
 }
 
 input[type=text]::placeholder {
     color: #757575;
 }
 
-input[type=text] {
-    background-color: #242424;
-    width: 300px;
-    height: 50px;
-    border-radius: 25px;
-    padding: 20px;
-    font-size: 15px;
-    border: 0;
-    margin: 5px;
-    color: #FFF
+select {
+    min-width: 150px;
+    text-align: center;
+    text-align: -webkit-center;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
 }
 
-input[type=text]:hover {
+option {
+    text-align: center;
+    text-align: -webkit-center;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+input[type=text] {
+    width: 300px;
+}
+
+input[type=text],
+select {
+    background-color: #242424;
+    height: 50px;
+    border-radius: 25px;
+    -moz-border-radius: 25px;
+    -webkit-border-radius: 25px;
+    padding: 0px 20px;
+    font-size: 15px;
+    border: 0;
+    margin: 7px 5px;
+    color: #FFF;
+}
+
+input[type=text]:hover,
+select:hover {
     background-color: #2a2a2a;
     box-shadow: 0 0 0 1px #5c5c5c;
 }
@@ -61,7 +86,8 @@ input[type=text]:hover {
 /* :focus-visible only shows for keyboard users */
 input[type=text]:focus,
 input[type=submit]:focus-visible,
-input[type=button]:focus-visible {
+input[type=button]:focus-visible,
+select:focus {
     outline: 1.5px solid #FFF;
 }
 
@@ -71,7 +97,7 @@ input[type=button] {
     width: 125px;
     height: 40px;
     border-radius: 20px;
-    margin: 5px;
+    margin: 7px 5px;
     font-size: 13px;
 }
 
@@ -91,7 +117,7 @@ input[type=button] {
 #created-playlist-embed-iframe {
     border: 0;
     height: 60vh;
-    margin: 5px;
+    margin: 7px 5px;
     width: 50vw;
     min-width: 280px;
 }

@@ -143,4 +143,3 @@ dist-ssr
 *.sw?
 
 function.zip
-serverless.yml

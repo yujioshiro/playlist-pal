@@ -10,7 +10,7 @@ export default function App() {
   const [promptInput, setPromptInput] = useState("");
 
   const API_ENDPOINT_INDEX: string = `${import.meta.env.VITE_API_ENDPOINT}/initial-songs`;
-  const API_ENDPOINT_GET_BASE_SONGS: string = `${import.meta.env.VITE_API_ENDPOINT}/get-base-songs`;
+  // const API_ENDPOINT_GET_BASE_SONGS: string = `${import.meta.env.VITE_API_ENDPOINT}/get-base-songs`;
 
 
   //Display example prompt when user clicks on Example button

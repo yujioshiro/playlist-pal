@@ -1,0 +1,20 @@
+service: my-service
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+
+functions:
+  handler:
+    handler: dist/index.handler
+    events:
+      - http:
+          path: initial-songs
+          method: post
+
+plugins:
+  - serverless-offline
+
+custom:
+  serverless-offline:
+    noPrependStageInUrl: true

@@ -131,6 +131,7 @@ export async function createPlaylist(prompt: string, genre: string, songs: strin
     console.log(typeof songs);
     console.log(`Adding these song ids: ${songs}`);
     console.log(accessToken);
+    console.log(`image: ${image}`)
 
     // create new playlist
     const requestBody = {

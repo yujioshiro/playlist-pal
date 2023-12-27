@@ -1,6 +1,7 @@
 * {
     font-family: system-ui, sans-serif;
     color:#FFF;
+    -webkit-appearance: none;
 }
 
 body {
@@ -19,6 +20,7 @@ body {
 }
 
 h1 {
+    font-size: clamp(40px, 3rem, 70px);
     margin-bottom: 5px;
 }
 
@@ -34,34 +36,66 @@ form {
 button {
     color: black;
     height: 50%;
-    margin: 5px;
+    margin: 7px 5px;
 }
 
 input[type=text]::placeholder {
     color: #757575;
 }
 
-input[type=text] {
-    background-color: #242424;
-    width: 300px;
-    height: 50px;
-    border-radius: 25px;
-    padding: 20px;
-    font-size: 15px;
-    border: 0;
-    margin: 5px;
-    color: #FFF
+select {
+    min-width: 150px;
+    text-align: center;
+    text-align: -webkit-center;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
 }
 
-input[type=text]:hover {
+option {
+    text-align: center;
+    text-align: -webkit-center;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+input[type=text] {
+    width: 300px;
+}
+
+input[type=text],
+select {
+    background-color: #242424;
+    height: 50px;
+    border-radius: 25px;
+    -moz-border-radius: 25px;
+    -webkit-border-radius: 25px;
+    padding: 0px 20px;
+    font-size: 15px;
+    border: 0;
+    margin: 7px 5px;
+    color: #FFF;
+}
+
+input[type=text]:hover,
+select:hover {
     background-color: #2a2a2a;
     box-shadow: 0 0 0 1px #5c5c5c;
+}
+
+#user-input {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
 /* :focus-visible only shows for keyboard users */
 input[type=text]:focus,
 input[type=submit]:focus-visible,
-input[type=button]:focus-visible {
+input[type=button]:focus-visible,
+select:focus {
     outline: 1.5px solid #FFF;
 }
 
@@ -71,7 +105,7 @@ input[type=button] {
     width: 125px;
     height: 40px;
     border-radius: 20px;
-    margin: 5px;
+    margin: 7px 5px;
     font-size: 13px;
 }
 
@@ -91,7 +125,7 @@ input[type=button] {
 #created-playlist-embed-iframe {
     border: 0;
     height: 60vh;
-    margin: 5px;
+    margin: 7px 5px;
     width: 50vw;
     min-width: 280px;
 }
@@ -120,12 +154,17 @@ iframe {
 
 #embedded-playlist {
     min-height: 500px;
+    margin: 7px;
 }
 
 /* Increase width for screens over 375px (iPhone 6/7/8) */
 @media only screen and (min-width: 375px) {
     input[type=text] {
         width: 330px;
+    }
+
+    #embedded-playlist {
+        width: 500px;
     }
 }
 
@@ -134,12 +173,20 @@ iframe {
     input[type=text] {
         width: 380px;
     }
+
+    #embedded-playlist {
+        width: 530px;
+    }
 }
 
 /* Increase width for screens over 768px (iPad Portrait) */
 @media only screen and (min-width: 768px) {
     input[type=text] {
         width: 430px;
+    }
+
+    #embedded-playlist {
+        width: 580px;
     }
 }
 
@@ -148,12 +195,20 @@ iframe {
     input[type=text] {
         width: 480px;
     }
+
+    #embedded-playlist {
+        width: 650px;
+    }
 }
 
 /* Increase width for screens over 1200px (Desktops) */
 @media only screen and (min-width: 1200px) {
     input[type=text] {
         width: 530px;
+    }
+
+    #embedded-playlist {
+        width: 700px;
     }
 }
 

@@ -2,15 +2,19 @@ service: my-service
 
 provider:
   name: aws
-  runtime: nodejs14.x
+  runtime: nodejs18.x
 
 functions:
-  handler:
+  mainHandler:
     handler: dist/index.handler
     events:
       - http:
           path: initial-songs
           method: post
+      - http:
+          path: create-playlist
+          method: post
+
 
 plugins:
   - serverless-offline

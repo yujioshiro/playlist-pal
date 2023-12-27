@@ -20,6 +20,7 @@ body {
 }
 
 h1 {
+    font-size: clamp(40px, 3rem, 70px);
     margin-bottom: 5px;
 }
 
@@ -81,6 +82,13 @@ input[type=text]:hover,
 select:hover {
     background-color: #2a2a2a;
     box-shadow: 0 0 0 1px #5c5c5c;
+}
+
+#user-input {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
 /* :focus-visible only shows for keyboard users */
@@ -146,12 +154,17 @@ iframe {
 
 #embedded-playlist {
     min-height: 500px;
+    margin: 7px;
 }
 
 /* Increase width for screens over 375px (iPhone 6/7/8) */
 @media only screen and (min-width: 375px) {
     input[type=text] {
         width: 330px;
+    }
+
+    #embedded-playlist {
+        width: 500px;
     }
 }
 
@@ -160,12 +173,20 @@ iframe {
     input[type=text] {
         width: 380px;
     }
+
+    #embedded-playlist {
+        width: 530px;
+    }
 }
 
 /* Increase width for screens over 768px (iPad Portrait) */
 @media only screen and (min-width: 768px) {
     input[type=text] {
         width: 430px;
+    }
+
+    #embedded-playlist {
+        width: 580px;
     }
 }
 
@@ -174,12 +195,20 @@ iframe {
     input[type=text] {
         width: 480px;
     }
+
+    #embedded-playlist {
+        width: 650px;
+    }
 }
 
 /* Increase width for screens over 1200px (Desktops) */
 @media only screen and (min-width: 1200px) {
     input[type=text] {
         width: 530px;
+    }
+
+    #embedded-playlist {
+        width: 700px;
     }
 }
 

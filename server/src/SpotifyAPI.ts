@@ -22,16 +22,20 @@ export async function createPlaylist(prompt: string, songs: string[], accessToke
         }
     ); 
 
-    const createdPlaylistData = await createdPlaylistResponse.json()
-    console.log(createdPlaylistData);
-    console.log(createdPlaylistData.id);
-    await Promise.all([
-        addSongsToPlaylist(songs, createdPlaylistData.id, accessToken),
-        uploadPlaylistCoverImage(image, createdPlaylistData.id, accessToken)
-    ])
-    
-    console.log(`playlistId: ${createdPlaylistData.id}`);
-    return { result: createdPlaylistData.id }
+    try {
+        const createdPlaylistData = await createdPlaylistResponse.json()
+        console.log(createdPlaylistData);
+        console.log(createdPlaylistData.id);
+        await Promise.all([
+            addSongsToPlaylist(songs, createdPlaylistData.id, accessToken),
+            uploadPlaylistCoverImage(image, createdPlaylistData.id, accessToken)
+        ])
+        
+        console.log(`playlistId: ${createdPlaylistData.id}`);
+        return { result: createdPlaylistData.id }
+    } catch(error) {
+        console.log(error)
+    }
 }
 
 export async function addSongsToPlaylist(songs: string[], playlistId: string, accessToken: string) {

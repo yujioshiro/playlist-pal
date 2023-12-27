@@ -1,12 +1,11 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
-import { getInitialSongsFromOpenAiChatCompletion, getFourMatchingSongsFromOpenAiChatCompletion, getImageFromOpenAi } from './OpenAIAPI';
-import { createPlaylist } from './SpotifyAPI';
+import { getInitialSongsFromOpenAiChatCompletion, getImageFromOpenAi } from './OpenAIAPI';
+// import { createPlaylist } from './SpotifyAPI';
 
 export async function handler(event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> {
     console.log(event.path);
-    // if (event.path === '/get-base-songs') {
-    //     console.log("THIS IS RUNNING");
-    //     console.log(event.body);
+
+    // if (event.path === `/create-playlist`) {
     //     return {
     //         statusCode: 200,
     //         headers: {
@@ -14,23 +13,10 @@ export async function handler(event: APIGatewayProxyEvent): Promise<APIGatewayPr
     //             'Access-Control-Allow-Headers': 'Content-Type',
     //         },
     //         body: JSON.stringify({
-    //             output: await secondHandler(JSON.parse(event.body!).prompt, JSON.parse(event.body!).song),
+    //             output: await createPlaylist(JSON.parse(event.body!).prompt, JSON.parse(event.body!).songs, JSON.parse(event.body!).accessToken, JSON.parse(event.body!).image)
     //         })
     //     }
     // }
-
-    if (event.path === `/create-playlist`) {
-        return {
-            statusCode: 200,
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Headers': 'Content-Type',
-            },
-            body: JSON.stringify({
-                output: await createPlaylist(JSON.parse(event.body!).prompt, JSON.parse(event.body!).songs, JSON.parse(event.body!).accessToken, JSON.parse(event.body!).image)
-            })
-        }
-    }
 
     let prompt: string;
     let genre: string;
@@ -83,58 +69,3 @@ export async function handler(event: APIGatewayProxyEvent): Promise<APIGatewayPr
         }
     }
 }
-
-// type Track = {
-//     artist: string;
-//     song: string;
-//     id: string;
-// }
-
-// type PlaylistToBuild = {
-//     tracks: string[];
-// }
-
-// export async function secondHandler(prompt: string, selectedSong: Track) {
-//     console.log(`*******************************************************`);
-//     console.log(`*******************************************************`);
-//     console.log(`*******************************************************`);
-//     console.log("****STARTING THE SECOND ROUND OF GPT SONG RETRIEVAL****")
-//     console.log(`*******************************************************`);
-//     console.log(`*******************************************************`);
-//     console.log(`*******************************************************`);
-
-//     // while (playlist.tracks.length < 30) {
-//     //     // might want to put all of the song getting in this while loop to ensure we send a full 30 song playlist to the client
-//     // }
-
-//     // GPT-4 will generate 4 songs based on the song the user selected
-//     let artist = selectedSong.artist;
-//     let song = selectedSong.song;
-
-//     // console.log(`SELECTED SONG: ${JSON.stringify(selectedSong)}`);
-//     let songsToPassToRecommendation = JSON.parse(JSON.parse((await getFourMatchingSongsFromOpenAiChatCompletion(prompt, artist, song)).result))
-//     // let songsToPassToRecommendation = JSON.parse('[{"artist":"Jack Johnson","song":"Banana Pancakes"},{"artist":"Corinne Bailey Rae","song":"Put Your Records On"},{"artist":"Jason Mraz","song":"Im Yours"},{"artist":"Sara Bareilles","song":"Love Song"}]')
-//     // let songIds = JSON.parse((await getSongIds(songsToPassToRecommendationFunction, accessToken)).body)
-//     // songIds.message.push(selectedSong)
-//     // // console.log(`Result of GetSongIds() at index.secondHandler: ${JSON.stringify(songIds)}`);
-
-//     // // The 5 songs are sent to Spotify Web API to get 100 song recommendations for each
-//     // console.log('running the getSongsRecommendations function');
-//     // console.log(`songIds.message: ${JSON.stringify(songIds.message)}`);
-//     // let songRecs: string[] = (JSON.parse((await getSongRecommendations(songIds.message, accessToken)).body)).message
-
-//     // // Once the playlist has at least 30 songs (but under 40), it is built with Spotify and the playlist ID is returned to the client. The app should check that there are at least 30 songs before sending the ID.
-//     // let playlistId = await createPlaylist(prompt, songRecs, await getImageFromOpenAi(prompt), accessToken)
-
-//     // console.log(typeof playlistId.result);
-//     // console.log(playlistId);
-
-//     let imageObject = await getImageFromOpenAi(prompt, artist)
-
-//     return  [songsToPassToRecommendation, imageObject]
-// }
-
-// export async function createPlaylistInSpotify(prompt: string, songs: string[], accessToken: string, image: string) {
-//     console.log("all paramters,",prompt, songs,accessToken,image);
-//     return (await createPlaylist(prompt, songs, accessToken, image)).result
-// }

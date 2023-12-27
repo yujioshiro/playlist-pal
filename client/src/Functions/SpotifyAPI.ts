@@ -1,3 +1,5 @@
+// import sharp from "sharp";
+
 type Track = {
     artist: string,
     song: string,
@@ -7,7 +9,7 @@ type Track = {
 const clientId: string = import.meta.env.VITE_SPOTIFY_CLIENT_ID!;
 const clientSecret: string = import.meta.env.VITE_SPOTIFY_CLIENT_SECRET!;
 const refreshToken: string = import.meta.env.VITE_SPOTIFY_REFRESH_TOKEN!;
-const API_ENDPOINT_CREATE_PLAYLIST: string = `${import.meta.env.VITE_API_ENDPOINT}/create-playlist`;
+// const API_ENDPOINT_CREATE_PLAYLIST: string = `${import.meta.env.VITE_API_ENDPOINT}/create-playlist`;
 
 export async function getAccessToken() {
     // Get new accessToken which allows us to fetch data from the Spotify API
@@ -28,6 +30,7 @@ export function getStoredAccessToken() {
 
 export async function getSongIds(songs: Track[]) {
     // convert the songs into an object of song objects
+    console.log("Getting Song IDs")
     let songsToReturn = []
     for (let song of songs) {
         console.log(song);
@@ -49,6 +52,7 @@ export async function getSongIds(songs: Track[]) {
                 continue
             }
     }
+    console.log("getSongIds() has successfully run")
     return {
         statusCode: 200,
         body: JSON.stringify({message: songsToReturn})
@@ -100,19 +104,112 @@ export async function getSongRecommendations(songs: Track[]) {
     }
 }
 
-export async function createPlaylist(prompt: string, songs: string[], image: string) {
-    prompt = prompt.toLocaleLowerCase()
-    let response = await fetch(`${API_ENDPOINT_CREATE_PLAYLIST}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ 
-            prompt: prompt,
-            songs: songs,
-            accessToken: getStoredAccessToken(),
-            image: image,
-        }),
-    });
-    return ((await response.json()).output).result
+// export async function createPlaylist(prompt: string, songs: string[], image: string) {
+//     console.log("Attempting to create playlist...")
+//     try {
+//         prompt = prompt.toLocaleLowerCase()
+//         let response = await fetch(`${API_ENDPOINT_CREATE_PLAYLIST}`, {
+//             method: "POST",
+//             headers: {
+//               "Content-Type": "application/json",
+//             },
+//             body: JSON.stringify({ 
+//                 prompt: prompt,
+//                 songs: songs,
+//                 accessToken: getStoredAccessToken(),
+//                 image: image,
+//             }),
+//         });
+//         return ((await response.json()).output).result
+//     } catch(error) {
+//         console.log(error)
+//     }
+
+// }
+
+export async function createPlaylist(prompt: string, genre: string, songs: string[], accessToken: string, image: string) {
+    console.log(typeof songs);
+    console.log(`Adding these song ids: ${songs}`);
+    console.log(accessToken);
+
+    // create new playlist
+    const requestBody = {
+        name: prompt,
+        description: `Genre: ${genre}, This playlist was created with playlistpal.yujioshiro.com`,
+        public: true,
+    }
+
+    const createdPlaylistResponse = await fetch("https://api.spotify.com/v1/users/12150582226/playlists", {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(requestBody),
+        }
+    );
+
+    const createdPlaylistData = await createdPlaylistResponse.json();
+
+    await Promise.all([
+        addSongsToPlaylist(songs, createdPlaylistData.id, accessToken),
+        // uploadPlaylistCoverImage(image, createdPlaylistData.id, accessToken)
+    ])
+
+
+    console.log(createdPlaylistData);
+    console.log(createdPlaylistData.id);
+    
+    return createdPlaylistData.id
+  }
+
+
+
+  export async function addSongsToPlaylist(songs: string[], playlistId: string, accessToken: string) {
+    for (let song of songs) {
+        console.log(`song: ${song}`);
+        await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks?uris=spotify:track:${song}`, {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        });
+    }
 }
+
+
+// export async function uploadPlaylistCoverImage(image: string, playlistId: string, accessToken: string) {
+//      //upload image
+//      console.log("attempting image upload");
+//      const imageResponse = await fetch(image);
+//      console.log("Converted imageObject to imageResponse...");
+//      const blob = await imageResponse.blob();
+//      console.log("converted imageResponse to blob...");
+       
+//      // Resize the image
+//      const MAX_WIDTH = 300; // Set the maximum width for the resized image
+//      const MAX_HEIGHT = 300; // Set the maximum height for the resized image
+     
+//      const buffer = Buffer.from(await blob.arrayBuffer());
+     
+//      const resizedImageBuffer = await sharp(buffer)
+//      .resize(MAX_WIDTH, MAX_HEIGHT, { fit: 'inside' })
+//      .jpeg({ quality: 80 }) // Adjust the quality value to reduce the file size
+//      .toBuffer();
+ 
+     
+//      const base64data = resizedImageBuffer.toString('base64');
+//      // console.log("base64data", base64data);
+//          try {
+//          fetch(`https://api.spotify.com/v1/playlists/${playlistId}/images`, {
+//              method: "PUT",
+//              headers: {
+//              Authorization: `Bearer ${accessToken}`,
+//              "Content-Type": "image/jpeg",
+//              },
+//              body: base64data,
+//          });
+//      } catch (error) {
+//          console.log("error:", error);
+//      }
+// }
